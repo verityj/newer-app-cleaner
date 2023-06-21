@@ -64,4 +64,4 @@ This script was covered in the [Search blog post] previously.
 
 [app-cleaner.sh]: https://github.com/sunknudsen/privacy-guides/tree/d6b7f836a0595efaf9716703b597138ce34e3b28/how-to-clean-uninstall-macos-apps-using-appcleaner-open-source-alternative
 [new app-cleaner.sh]: https://github.com/verityj/newer-app-cleaner/blob/000524534e6a0befc6f8e4f48674c8164c4d9302/app-cleaner.sh
-[Search blog post]: {% post_url 2023-06-16-search %}
+[Search blog post]: https://github.com/verityj/verityj.github.io/blob/b264f1af4cb9af93ecf8abf7c2e69054a65f8c5a/_posts/2023-06-16-search.md
