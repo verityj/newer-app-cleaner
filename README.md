@@ -2,6 +2,19 @@
 
 Updated [app-cleaner.sh](https://github.com/sunknudsen/privacy-guides/tree/master/how-to-clean-uninstall-macos-apps-using-appcleaner-open-source-alternative) from Sun Knudsen for iOS apps on Macs
 
+## Installation
+
+Download the [new app-cleaner.sh]. 
+
+Make it executable and place the file anywhere you find convenient. I recommend:
+
+```
+$ chmod +x app-cleaner.sh
+    # Now the script is able to run
+$ mv app-cleaner.sh /usr/local/bin/
+    # Now the script is available for use from wherever you have navigated
+```
+
 ## Usage
 
 Example: Damus iOS app removal.
