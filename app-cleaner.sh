@@ -1,4 +1,12 @@
-#! /bin/zsh
+#!/bin/zsh
+
+# Written by: VerityJ
+# Published on: https://gist.github.com/verityj
+#
+# Usage: ./app-cleaner.sh /Applications/<app-name>.app
+#
+# Modified from:
+# https://github.com/sunknudsen/privacy-guides/tree/d6b7f836a0595efaf9716703b597138ce34e3b28/how-to-clean-uninstall-macos-apps-using-appcleaner-open-source-alternative
 
 if [ -z "$1" ] || [ "$1" = "--help" ]; then
   printf "%s\n" "Usage: app-cleaner.sh /path/to/app.app"
