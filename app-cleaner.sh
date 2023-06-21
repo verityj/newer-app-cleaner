@@ -23,8 +23,8 @@ if [ ! -e "$1/Contents/Info.plist" ]; then
     info_plist=$1/Wrapper/$app_name.app/Info.Plist
     printf "%s\n" "(Assigned "$info_plist")"
     printf "\n"
-    printf "%s\n" "  * IMPORTANT"
-    printf "%s\n" "  * This is a container app!"
+    printf "%s\n" "  ************* IMPORTANT *************"
+    printf "%s\n" "  * This is an iOS app with Containers!"
     printf "  * Next, run \$ find-all.sh "$app_name
     printf "%s\n" " (case-insensitive)"
     printf "%s\n" "  * find-all.sh available at https://verityj.github.io"
