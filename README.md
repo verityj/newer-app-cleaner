@@ -34,9 +34,7 @@ Then find the other files still remaining (example for iOS Damus.app, replace wi
 $ find-all.sh damus
 ```
 
-`find-all.sh` is my script that I use to find everything that might be hiding in the system:
-
-<script src="https://gist.github.com/verityj/1baf59b95a7da5f03a44ce0620a4253d.js"></script>
+`find-all.sh` is [my script](https://gist.github.com/verityj/1baf59b95a7da5f03a44ce0620a4253d) that I use to find everything that might be hiding in the system:
 
 There will be other files found! There will be app logs, for example. Those are safe to remove.
 
