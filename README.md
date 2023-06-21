@@ -4,7 +4,7 @@ How to clean out your system completely of a given app, especially the iOS apps 
 
 It is great to be able to install, use and check out iOS apps on a Mac. But how do you make absolutely sure it is completely gone when you decide to trash it or reinstall?
 
-***Update:*** I uploaded a [souped up Python script] version as well. It does it all in one script, handles native Mac as well as wrapped iOS app removal. Complete and utter removal. Because I could not just leave it well enough alone, I guess.
+> ***Update:*** I uploaded a [souped up Python script] version as well. It does it all in one script, handles native Mac as well as wrapped iOS app removal. Complete and utter removal. Because I could not just leave it well enough alone, I guess.
 
 There is already an excellent script by Sun Knudsen called [app-cleaner.sh]. Unfortunately, it fails completely for iOS apps and it still may leave some files behind (like crash logs).
 
