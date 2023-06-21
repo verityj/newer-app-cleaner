@@ -25,7 +25,7 @@ $ mv app-cleaner.sh /usr/local/bin/
 
 Once you have the script ready to use, let it stop any running processes and trash the usual files. This updated version will be able to process the iOS apps and will let you know about it. Here is an example of uninstalling a Damus iOS (Nostr chat) app from a Mac.
 
-```sh
+```
 $ app-cleaner.sh /Applications/Damus.app
 Cannot find /Applications/Damus.app/Contents/Info.plist
 (Found /Applications/Damus.app/Wrapper/Damus.app/Info.plist)
