@@ -4,6 +4,8 @@ How to clean out your system completely of a given app, especially the iOS apps 
 
 It is great to be able to install, use and check out iOS apps on a Mac. But how do you make absolutely sure it is completely gone when you decide to trash it or reinstall?
 
+***Update:*** I uploaded a [souped up Python script] version as well. It does it all in one script, handles native Mac as well as wrapped iOS app removal. Complete and utter removal. Because I could not just leave it well enough alone, I guess.
+
 There is already an excellent script by Sun Knudsen called [app-cleaner.sh]. Unfortunately, it fails completely for iOS apps and it still may leave some files behind (like crash logs).
 
 I updated the script and published the [new app-cleaner.sh] with instructions for use.
@@ -58,10 +60,12 @@ This script was covered in the [Search blog post] previously.
 
 ## Resources:
 
-- Updated [new app-cleaner.sh]
+- Updated version 2: [souped up Python script]
+- Updated version 1: [new app-cleaner.sh]
 - Starting point [app-cleaner.sh]
 - [Search blog post]
 
 [app-cleaner.sh]: https://github.com/sunknudsen/privacy-guides/tree/d6b7f836a0595efaf9716703b597138ce34e3b28/how-to-clean-uninstall-macos-apps-using-appcleaner-open-source-alternative
 [new app-cleaner.sh]: https://github.com/verityj/newer-app-cleaner/blob/000524534e6a0befc6f8e4f48674c8164c4d9302/app-cleaner.sh
 [Search blog post]: https://github.com/verityj/verityj.github.io/blob/b264f1af4cb9af93ecf8abf7c2e69054a65f8c5a/_posts/2023-06-16-search.md
+[souped up Python script]: https://github.com/verityj/newer-app-cleaner/blob/32ef8e1b4a7acea9bbe6265c179af53986529e19/app-cleaner.py
