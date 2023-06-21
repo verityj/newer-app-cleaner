@@ -1,10 +1,16 @@
 # newer-app-cleaner
 
-Updated [app-cleaner.sh](https://github.com/sunknudsen/privacy-guides/tree/master/how-to-clean-uninstall-macos-apps-using-appcleaner-open-source-alternative) from Sun Knudsen for iOS apps on Macs
+How to clean out your system completely of a given app, especially the iOS apps on Macs. No software to install to do this, and you are in complete control of the process.
+
+It is great to be able to install, use and check out iOS apps on a Mac. But how do you make absolutely sure it is completely gone when you decide to trash it or reinstall?
+
+There is already an excellent script by Sun Knudsen called [app-cleaner.sh]. Unfortunately, it fails completely for iOS apps and it still may leave some files behind (like crash logs).
+
+I updated the script and published the [new app-cleaner.sh] with instructions for use.
 
 ## Installation
 
-Download the [new app-cleaner.sh]. 
+Download the [new app-cleaner.sh].
 
 Make it executable and place the file anywhere you find convenient. I recommend:
 
@@ -12,14 +18,14 @@ Make it executable and place the file anywhere you find convenient. I recommend:
 $ chmod +x app-cleaner.sh
     # Now the script is able to run
 $ mv app-cleaner.sh /usr/local/bin/
-    # Now the script is available for use from wherever you have navigated
+    # Now the script is available to you from anywhere
 ```
 
-## Usage
+## First, clean up with the new app-cleaner.sh
 
-Example: Damus iOS app removal.
+Once you have the script ready to use, let it stop any running processes and trash the usual files. This updated version will be able to process the iOS apps and will let you know about it. Here is an example of uninstalling a Damus iOS (Nostr chat) app from a Mac.
 
-```
+```sh
 $ app-cleaner.sh /Applications/Damus.app
 Cannot find /Applications/Damus.app/Contents/Info.plist
 (Found /Applications/Damus.app/Wrapper/Damus.app/Info.plist)
@@ -38,32 +44,24 @@ Finding app data…
 Move app data to trash (y or n)?
 ```
 
-This will quit any running processes and find the usual files for the application.
-Allow this script to move the found files to Trash, as usual.
+As you can see, the script will move _most_ of the app files to Trash. If you're happy with it so far, empty Trash to avoid finding those files in the next and final step.
 
-Then find the other files still remaining (example for iOS Damus.app, replace with any part of the iOS app name):
+## Clean up the rest
+
+Find the other files still remaining (example for iOS Damus.app, replace with any part of the iOS app name) by running the following script.
 
 ```
 $ find-all.sh damus
 ```
 
-`find-all.sh` is [my script](https://gist.github.com/verityj/1baf59b95a7da5f03a44ce0620a4253d) that I use to find everything that might be hiding in the system:
+This script was covered in the [Search blog post] previously.
 
-There will be other files found! There will be app logs, for example. Those are safe to remove.
+## Resources:
 
-The most important are the container folders, such as
+- Updated [new app-cleaner.sh]
+- Starting point [app-cleaner.sh]
+- [Search blog post]
 
-```
-/Users/<your-user>/Library/Containers/B39DA0EE-A036-4E9F-BA8D-75C674F70F91/Data/Library/Saved Application State/com.jb55.damus2~iosmac.savedState
-/Users/<your-user>/Library/Containers/B39DA0EE-A036-4E9F-BA8D-75C674F70F91/Data/Library/Preferences/com.jb55.damus2.plist
-/Users/<your-user>/Library/Containers/B39DA0EE-A036-4E9F-BA8D-75C674F70F91/Data/Library/Application Scripts/com.jb55.damus2
-/Users/<your-user>/Library/Containers/B39DA0EE-A036-4E9F-BA8D-75C674F70F91/Data/Library/HTTPStorages/com.jb55.damus2
-/Users/<your-user>/Library/Containers/B39DA0EE-A036-4E9F-BA8D-75C674F70F91/Data/Library/Caches/com.jb55.damus2
-```
-
-Delete all those containers (there may be more than 1). Just copy the paths from the list of results above:
-```
-$ rm -rf /Users/<your-user>/Library/Containers/B39DA0EE-A036-4E9F-BA8D-75C674F70F91
-```
-
-Cleaning done! No more app.
+[app-cleaner.sh]: https://github.com/sunknudsen/privacy-guides/tree/d6b7f836a0595efaf9716703b597138ce34e3b28/how-to-clean-uninstall-macos-apps-using-appcleaner-open-source-alternative
+[new app-cleaner.sh]: https://github.com/verityj/newer-app-cleaner/blob/000524534e6a0befc6f8e4f48674c8164c4d9302/app-cleaner.sh
+[Search blog post]: {% post_url 2023-06-16-search %}
