@@ -12,8 +12,8 @@ Cannot find /Applications/Damus.app/Contents/Info.plist
 (Found /Applications/Damus.app/Wrapper/Damus.app/Info.plist)
 (Assigned /Applications/Damus.app/Wrapper/Damus.app/Info.Plist)
 
-  * IMPORTANT
-  * This is an iOS app!
+  ************* IMPORTANT *************
+  * This is an iOS app with Containers!
   * Next, run $ find-all.sh Damus (case-insensitive)
   * find-all.sh available at https://verityj.github.io
   * Remove all identified folders from ~/Library/Containers/<long-string>
