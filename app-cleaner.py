@@ -60,22 +60,25 @@ def choose_to_delete(list):
     bold = "\033[1m"
     reset_all = "\033[0m"
   
-  choice = input(f"Delete the above? {color.bold}{color.blue}y{color.reset_all} / {color.bold}{color.green}n{color.reset_all}\n? ")
+  choice = input(f" - {color.bold}{color.blue}Delete the above [y/n]? ")
+  print(f"{color.reset_all}", end='')
   if choice == 'y':
     # Mac OS user Trash folder location:
     trash = home_path + "/.Trash/"
     if Path(trash).exists():
       for file in list:
-        # popen(f"mv {file} {trash}/")
-        popen(f"osascript -e 'tell application \"Finder\"' -e 'set source_file to POSIX file \"{file}\"' -e 'delete source_file with replacing' -e 'end tell' > /dev/null")
-        time.sleep(2)
-        print(f"{color.blue}Moving to trash:{color.reset_all} {file}")
+        # popen(f"mv -f {file} {trash}")
+        try:
+          popen(f"osascript -e 'tell application \"Finder\"' -e 'try' -e 'set source_file to POSIX file (\"{file}\")' -e 'delete source_file with replacing' -e 'end try' -e 'end tell' ")
+          time.sleep(2)
+        finally:
+          print(f"{color.blue}Moving to trash:{color.reset_all} {file}")
     else:
       # Trash folder not found, remove:
       popen(f"rm -rf {file} {trash}/")
     time.sleep(2)
   else:
-    print(f"{color.green}No changes made{color.reset_all}")
+    print(f" - {color.green}No changes made{color.reset_all}")
 
 ########
 # Main #
@@ -86,7 +89,7 @@ app_name = app_name.split('.app')[0]
 
 # Check if the app is completely closed, no running processes
 if not popen(f"pgrep -afil '{app_name}' | grep -v 'app-cleaner' | grep -v 'pgrep -afil'").read():
-  print(f" - {app_name} is not running, proceeding")
+  print(f" - '{app_name}' not running. Proceeding")
 else:
   print(f"\n - {app_name} is running, quit and retry. Exiting\n")
   print("Running process(es):")
@@ -112,16 +115,15 @@ if exists(argv[1]):
   else:
     "'Info.plist' could not be found. Exiting"
     exit(0)
-  
 else:
-  print("{} not found. Exiting".format(argv[1]))
+  print(" - {} not found. Exiting".format(argv[1]))
   exit(0)
 
 # Set search locations
 from os.path import expanduser
 home_path = expanduser('~')
-
 locations = [
+  "/private/var/db/receipts",
   "{}/Library".format(home_path),
   "{}/Library/Application Scripts".format(home_path),
   "{}/Library/Application Support".format(home_path),
@@ -149,38 +151,39 @@ locations = [
   "/Library/Logs",
   "/Library/Preferences",
   "/Library/PrivilegedHelperTools",
-  "/private/var/db/receipts",
-  "/private/var/folders"
   "/usr/local/bin",
   "/usr/local/etc",
   "/usr/local/opt",
   "/usr/local/sbin",
   "/usr/local/share",
-  "/usr/local/var",
-  "/private/var/folders"
+  "/usr/local/var"
 ]
-# add cache and temp locations, remove trailing newlines
-locations.append(popen("getconf DARWIN_USER_CACHE_DIR | sed \"s/\/$//\"").read().rstrip())
-locations.append(popen("getconf DARWIN_USER_TEMP_DIR | sed \"s/\/$//\"").read().rstrip())
+# user cache directry is /var/folders/qp/<>/C
+locations.append(popen("getconf DARWIN_USER_CACHE_DIR | sed 's/.$//' ").read().rstrip())
+# user temp directry is /var/folders/qp/<>/T
+locations.append(popen("getconf DARWIN_USER_TEMP_DIR | sed sed 's/.$//' ").read().rstrip())
 
+# first, include the app itself
 results = ["{}".format(argv[1])]
+
+# perform app content search
 for location in locations:
   results += search_function(location, identifier, 1)
   results += search_function(location, app_name, 1)
-
 # search through additional special locations
 results += search_function('/private/var/tmp', identifier, 6)
-results += search_function('/private/var/folders', identifier, 7)
+results += search_function('/private/var/folders', identifier, 4)
 
-print()
+print(f" - Found {app_name} locations:")
 for file in results:
   print(file)
 
 choose_to_delete(results)
 
-if infoplist_ios:
+try:
+  infoplist_ios
   containers = []
-  print(f"\n- There may be additional container folders to delete for wrapped iOS apps -\n")
+  print(f"\n - There may be {app_name} containers. Looking")
   container_files = search_function("{}/Library/Containers".format(home_path), identifier, 6)
   # if containers are found
   if container_files:
@@ -191,6 +194,12 @@ if infoplist_ios:
         containers.append(container_folder)
     for i in range (0, len(containers)):
       containers[i] = f'{home_path}/Library/Containers/' + containers[i]
+    print(" - Found container(s):")
+    for i in range (0, len(containers)):
+      print(containers[i])
     choose_to_delete(containers)
   else:
-    print("No containers found")
+    print(" - No containers found. Done")
+except:
+  # this is not an iOS app with containers. Done
+  exit(0)
