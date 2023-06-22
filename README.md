@@ -16,7 +16,7 @@ Usage to remove an example app:
 python3 app-cleaner.py /Applications/Damus.app
 ```
 
-Go through the prompts for the rest.
+Go through the prompts for the rest. If you prefer the shell script, that's version 1 covered below.
 
 ## Version 1 - shell script
 
