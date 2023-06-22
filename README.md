@@ -4,13 +4,17 @@ How to clean out your system completely of a given app, especially the iOS apps 
 
 It is great to be able to install, use and check out iOS apps on a Mac. But how do you make absolutely sure it is completely gone when you decide to trash it or reinstall?
 
+# Version 2 - a Python script
+
 > ***Update:*** I uploaded a [souped up Python script] version as well. It does it all in one script, handles native Mac as well as wrapped iOS app removal. Complete and utter removal. Because I could not just leave it well enough alone, I guess.
+
+# Version 1 - shell script
 
 There is already an excellent script by Sun Knudsen called [app-cleaner.sh]. Unfortunately, it fails completely for iOS apps and it still may leave some files behind (like crash logs).
 
 I updated the script and published the [new app-cleaner.sh] with instructions for use.
 
-## Installation
+## Installation (of script version 1)
 
 Download the [new app-cleaner.sh].
 
@@ -23,7 +27,7 @@ $ mv app-cleaner.sh /usr/local/bin/
     # Now the script is available to you from anywhere
 ```
 
-## First, clean up with the new app-cleaner.sh
+## First, clean up with the new app-cleaner.sh version 1
 
 Once you have the script ready to use, let it stop any running processes and trash the usual files. This updated version will be able to process the iOS apps and will let you know about it. Here is an example of uninstalling a Damus iOS (Nostr chat) app from a Mac.
 
@@ -48,7 +52,7 @@ Move app data to trash (y or n)?
 
 As you can see, the script will move _most_ of the app files to Trash. If you're happy with it so far, empty Trash to avoid finding those files in the next and final step.
 
-## Clean up the rest
+## Clean up the rest (after running script version 1)
 
 Find the other files still remaining (example for iOS Damus.app, replace with any part of the iOS app name) by running the following script.
 
