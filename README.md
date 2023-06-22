@@ -8,6 +8,16 @@ It is great to be able to install, use and check out iOS apps on a Mac. But how 
 
 > ***Update:*** I uploaded a [souped up Python script] version as well. It does it all in one script, handles native Mac as well as wrapped iOS app removal. Complete and utter removal. Because I could not just leave it well enough alone, I guess.
 
+The installation is to download the python script file and place it somewhere convenient.
+
+Usage to remove an example app:
+
+```
+python3 app-cleaner.py /Applications/Damus.app
+```
+
+Go through the prompts for the rest.
+
 ## Version 1 - shell script
 
 There is already an excellent script by Sun Knudsen called [app-cleaner.sh]. Unfortunately, it fails completely for iOS apps and it still may leave some files behind (like crash logs).
