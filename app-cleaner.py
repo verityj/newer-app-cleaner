@@ -1,7 +1,11 @@
-# This script removes application directories and files
+#!/usr/bin/env python3
+# Created using python 3.9.6 on Mac OS 13
+#
+# This script removes directories and files specific to a given application
 #
 # Created by VerityJ
 # https://verityj.github.io
+# Created 2023.06
 #
 # Usage: python3 app-cleaner.py /Applications/<app-name>.app
 # Example: python3 app-cleaner.py /Applications/Damus.app
@@ -88,12 +92,12 @@ app_name = argv[1].split('/')[2]
 app_name = app_name.split('.app')[0]
 
 # Check if the app is completely closed, no running processes
-if not popen(f"pgrep -afil '{app_name}' | grep -v 'app-cleaner' | grep -v 'pgrep -afil'").read():
-  print(f" - '{app_name}' not running. Proceeding")
+if not popen(f"pgrep -afil '{app_name}' | grep -v 'app-cleaner' | grep -v 'pgrep'").read():
+  print(f" - '{app_name}' is not running. Proceeding")
 else:
   print(f"\n - {app_name} is running, quit and retry. Exiting\n")
   print("Running process(es):")
-  print(popen(f"pgrep -afil '{app_name}' | grep -v 'app-cleaner' | grep -v 'pgrep -afil'").read())
+  print(popen(f"pgrep -afil '{app_name}' | grep -v 'app-cleaner' | grep -v 'pgrep'").read())
   exit(0)
 
 if exists(argv[1]):
@@ -161,7 +165,7 @@ locations = [
 # user cache directry is /var/folders/qp/<>/C
 locations.append(popen("getconf DARWIN_USER_CACHE_DIR | sed 's/.$//' ").read().rstrip())
 # user temp directry is /var/folders/qp/<>/T
-locations.append(popen("getconf DARWIN_USER_TEMP_DIR | sed sed 's/.$//' ").read().rstrip())
+locations.append(popen("getconf DARWIN_USER_TEMP_DIR | sed 's/.$//' ").read().rstrip())
 
 # first, include the app itself
 results = ["{}".format(argv[1])]
