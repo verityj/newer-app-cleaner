@@ -12,6 +12,7 @@ from os import remove
 from os.path import exists
 from os.path import splitext
 from pathlib import Path
+import time # for pausing
 
 ##############
 # How to use #
@@ -65,13 +66,13 @@ def choose_to_delete(list):
     trash = home_path + "/.Trash/"
     if Path(trash).exists():
       for file in list:
-        popen(f"mv {file} {trash}/")
-        # popen(f"osascript -e 'tell application \"Finder\" to delete { file }' > /dev/null")
+        # popen(f"mv {file} {trash}/")
+        popen(f"osascript -e 'tell application \"Finder\"' -e 'set source_file to POSIX file \"{file}\"' -e 'delete source_file with replacing' -e 'end tell' > /dev/null")
+        time.sleep(2)
         print(f"{color.blue}Moving to trash:{color.reset_all} {file}")
     else:
       # Trash folder not found, remove:
       popen(f"rm -rf {file} {trash}/")
-    import time
     time.sleep(2)
   else:
     print(f"{color.green}No changes made{color.reset_all}")
@@ -193,5 +194,3 @@ if infoplist_ios:
     choose_to_delete(containers)
   else:
     print("No containers found")
-print("\n(If you noticed any 'Permission denied' messages above, delete those manually.)")
-print("Done")
