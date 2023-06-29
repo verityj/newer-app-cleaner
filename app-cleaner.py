@@ -96,17 +96,17 @@ def choose_to_delete(list):
 app_name = argv[1].split('/')[2]
 app_name = app_name.split('.app')[0]
 
-# Check if the app is completely closed, no running processes
-if not popen(f"pgrep -afil '{app_name}' | grep -v 'app-cleaner' | grep -v 'pgrep'").read():
-  if errorCheck:
-    print(f" - '{app_name}' is not running. Proceeding")
-else:
-  print(f"\n - {app_name} is running, quit and retry. Exiting\n")
-  print("Running process(es):")
-  print(popen(f"pgrep -afil '{app_name}' | grep -v 'app-cleaner' | grep -v 'pgrep'").read())
-  exit(0)
-
-if exists(argv[1]):
+# If application name is identified:
+if app_name:
+  # Check if the app is completely closed, no running processes
+  if not popen(f"pgrep -afil '{app_name}' | grep -v 'app-cleaner' | grep -v 'pgrep'").read():
+    if errorCheck:
+      print(f" - '{app_name}' is not running. Proceeding")
+  else:
+    print(f"\n - {app_name} is running, quit and retry. Exiting\n")
+    print("Running process(es):")
+    print(popen(f"pgrep -afil '{app_name}' | grep -v 'app-cleaner' | grep -v 'pgrep'").read())
+    exit(0)
   # For Mac applications, need to go 2 levels deep to find Info.plist
   infoplist_found = search_function(argv[1],'Info.plist', 2)
   if not infoplist_found:
@@ -117,19 +117,19 @@ if exists(argv[1]):
     if infoplist_found:
       infoplist_ios = infoplist_found[0]
       if errorCheck:
-        print(f" - Found {infoplist_ios}")
+        print(f" - Found preference list {infoplist_ios}")
       identifier = bundle_id(infoplist_ios)
   elif infoplist_found:
     # This is a regular Mac app
     infoplist_mac = infoplist_found[0]
     if errorCheck:
-      print(f" - Found {infoplist_mac}")
+      print(f" - Found preference list {infoplist_mac}")
     identifier = bundle_id(infoplist_mac)
   else:
     "'Info.plist' could not be found. Exiting"
     exit(0)
 else:
-  print(" - {} not found. Exiting".format(argv[1]))
+  print(" - {} not found in /Applications/. Exiting".format(argv[1]))
   exit(0)
 
 # Set search locations
