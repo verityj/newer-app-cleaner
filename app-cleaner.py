@@ -9,6 +9,8 @@
 #
 # Usage: python3 app-cleaner.py /Applications/<app-name>.app
 # Example: python3 app-cleaner.py /Applications/Damus.app
+#
+# Line 23 change errorCheck to False to simplify output
 
 from sys import argv
 from os import popen
@@ -17,6 +19,8 @@ from os.path import exists
 from os.path import splitext
 from pathlib import Path
 import time # for pausing
+
+errorCheck = True
 
 ##############
 # How to use #
@@ -38,7 +42,8 @@ def bundle_id(infoplist):
   identifier = ''
   identifier = popen(f"/usr/libexec/PlistBuddy -c \"Print CFBundleIdentifier\" \"{infoplist}\" 2> /dev/null").read().rstrip()
   if identifier != '':
-    # print("(Found bundle identifier", identifier + ")")
+    if errorCheck:
+     print(" - Found bundle identifier", identifier)
     return identifier
   else:
     print("Bundle identifier not found. Exiting")
@@ -64,7 +69,7 @@ def choose_to_delete(list):
     bold = "\033[1m"
     reset_all = "\033[0m"
   
-  choice = input(f" - {color.bold}{color.blue}Delete the above [y/n]? ")
+  choice = input(f"\n - {color.bold}{color.blue}Delete the above [y/n]? ")
   print(f"{color.reset_all}", end='')
   if choice == 'y':
     # Mac OS user Trash folder location:
@@ -93,7 +98,8 @@ app_name = app_name.split('.app')[0]
 
 # Check if the app is completely closed, no running processes
 if not popen(f"pgrep -afil '{app_name}' | grep -v 'app-cleaner' | grep -v 'pgrep'").read():
-  print(f" - '{app_name}' is not running. Proceeding")
+  if errorCheck:
+    print(f" - '{app_name}' is not running. Proceeding")
 else:
   print(f"\n - {app_name} is running, quit and retry. Exiting\n")
   print("Running process(es):")
@@ -104,17 +110,20 @@ if exists(argv[1]):
   # For Mac applications, need to go 2 levels deep to find Info.plist
   infoplist_found = search_function(argv[1],'Info.plist', 2)
   if not infoplist_found:
-    print(" - (This is not a regular Mac app, will search Containers.)")
+    if errorCheck:
+      print(" - This is not a regular Mac app, will search Containers")
     # For iOS containers, need to go 3 levels deep to find Info.plist
     infoplist_found = search_function(argv[1],'Info.plist', 3)
     if infoplist_found:
       infoplist_ios = infoplist_found[0]
-      # print(f"(Found {infoplist_ios})")
+      if errorCheck:
+        print(f" - Found {infoplist_ios}")
       identifier = bundle_id(infoplist_ios)
   elif infoplist_found:
     # This is a regular Mac app
     infoplist_mac = infoplist_found[0]
-    # print(f"(Found {infoplist_mac})")
+    if errorCheck:
+      print(f" - Found {infoplist_mac}")
     identifier = bundle_id(infoplist_mac)
   else:
     "'Info.plist' could not be found. Exiting"
@@ -178,32 +187,34 @@ for location in locations:
 results += search_function('/private/var/tmp', identifier, 6)
 results += search_function('/private/var/folders', identifier, 4)
 
-print(f" - Found {app_name} locations:")
-for file in results:
-  print(file)
-
-choose_to_delete(results)
-
 try:
   infoplist_ios
   containers = []
-  print(f"\n - There may be {app_name} containers. Looking")
+  if errorCheck:
+    print(f" - Looking for {app_name} containers")
   container_files = search_function("{}/Library/Containers".format(home_path), identifier, 6)
   # if containers are found
   if container_files:
+    if errorCheck:
+      print(" - Found container files:")
     for container_file in container_files:
-      print(container_file)
+      if errorCheck:
+        print(container_file)
       container_folder = container_file.split('/')[5]
       if container_folder not in containers:
         containers.append(container_folder)
     for i in range (0, len(containers)):
-      containers[i] = f'{home_path}/Library/Containers/' + containers[i]
-    print(" - Found container(s):")
-    for i in range (0, len(containers)):
-      print(containers[i])
-    choose_to_delete(containers)
+      results += f'{home_path}/Library/Containers/{containers[i]}'.splitlines()
   else:
-    print(" - No containers found. Done")
+    if errorCheck:
+      print(" - No containers found. Proceeding")
 except:
   # this is not an iOS app with containers. Done
-  exit(0)
+  # exit(0)
+  pass
+
+print(f"\n - All {app_name} locations:\n")
+for file in results:
+  print(file)
+
+choose_to_delete(results)
