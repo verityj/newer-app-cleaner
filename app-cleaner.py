@@ -38,7 +38,7 @@ if len(argv) != 2:
 #########################
 # Command:
 # /usr/libexec/PlistBuddy -c "Print CFBundleIdentifier" "/Applications/<app-name>.app/Contents/Info.plist" 2> /dev/null
-def bundle_id(infoplist):
+def bundleID(infoplist):
   identifier = ''
   identifier = popen(f"/usr/libexec/PlistBuddy -c \"Print CFBundleIdentifier\" \"{infoplist}\" 2> /dev/null").read().rstrip()
   if identifier != '':
@@ -53,7 +53,7 @@ def bundle_id(infoplist):
 # Find #
 ########
 
-def search_function(directory, pattern, maxdepth):
+def searchFunction(directory, pattern, maxdepth):
   result = ''
   result = popen("find {} -iname '*{}*' -maxdepth {} -print 2>/dev/null | grep -v 'No such file or directory' | grep -v 'Operation not permitted' | grep -v 'Permission denied'".format(directory, pattern, maxdepth)).read().rstrip().splitlines()
   return result
@@ -62,7 +62,7 @@ def search_function(directory, pattern, maxdepth):
 # Make a choice #
 #################
 
-def choose_to_delete(list):
+def chooseToDelete(list):
   class color:
     blue = "\033[34m"
     green = "\033[32m"
@@ -73,7 +73,7 @@ def choose_to_delete(list):
   print(f"{color.reset_all}", end='')
   if choice == 'y':
     # Mac OS user Trash folder location:
-    trash = home_path + "/.Trash/"
+    trash = homePath + "/.Trash/"
     if Path(trash).exists():
       for file in list:
         # popen(f"mv -f {file} {trash}")
@@ -93,38 +93,38 @@ def choose_to_delete(list):
 # Main #
 ########
 
-app_name = argv[1].split('/')[2]
-app_name = app_name.split('.app')[0]
+appName = argv[1].split('/')[2]
+appName = appName.split('.app')[0]
 
 # If application name is identified:
-if app_name:
+if appName:
   # Check if the app is completely closed, no running processes
-  if not popen(f"pgrep -afil '{app_name}' | grep -v 'app-cleaner' | grep -v 'pgrep'").read():
+  if not popen(f"pgrep -afil '{appName}' | grep -v 'app-cleaner' | grep -v 'pgrep'").read():
     if errorCheck:
-      print(f" - '{app_name}' is not running. Proceeding")
+      print(f" - '{appName}' is not running. Proceeding")
   else:
-    print(f"\n - {app_name} is running, quit and retry. Exiting\n")
+    print(f"\n - {appName} is running, quit and retry. Exiting\n")
     print("Running process(es):")
-    print(popen(f"pgrep -afil '{app_name}' | grep -v 'app-cleaner' | grep -v 'pgrep'").read())
+    print(popen(f"pgrep -afil '{appName}' | grep -v 'app-cleaner' | grep -v 'pgrep'").read())
     exit(0)
   # For Mac applications, need to go 2 levels deep to find Info.plist
-  infoplist_found = search_function(argv[1],'Info.plist', 2)
-  if not infoplist_found:
+  infoplistFound = searchFunction(argv[1],'Info.plist', 2)
+  if not infoplistFound:
     if errorCheck:
       print(" - This is not a regular Mac app, will search Containers")
     # For iOS containers, need to go 3 levels deep to find Info.plist
-    infoplist_found = search_function(argv[1],'Info.plist', 3)
-    if infoplist_found:
-      infoplist_ios = infoplist_found[0]
+    infoplistFound = searchFunction(argv[1],'Info.plist', 3)
+    if infoplistFound:
+      infoplist_ios = infoplistFound[0]
       if errorCheck:
         print(f" - Found preference list {infoplist_ios}")
-      identifier = bundle_id(infoplist_ios)
-  elif infoplist_found:
+      identifier = bundleID(infoplist_ios)
+  elif infoplistFound:
     # This is a regular Mac app
-    infoplist_mac = infoplist_found[0]
+    infoplist_mac = infoplistFound[0]
     if errorCheck:
       print(f" - Found preference list {infoplist_mac}")
-    identifier = bundle_id(infoplist_mac)
+    identifier = bundleID(infoplist_mac)
   else:
     "'Info.plist' could not be found. Exiting"
     exit(0)
@@ -134,24 +134,24 @@ else:
 
 # Set search locations
 from os.path import expanduser
-home_path = expanduser('~')
+homePath = expanduser('~')
 locations = [
   "/private/var/db/receipts",
-  "{}/Library".format(home_path),
-  "{}/Library/Application Scripts".format(home_path),
-  "{}/Library/Application Support".format(home_path),
-  "{}/Library/Application Support/CrashReporter".format(home_path),
-  "{}/Library/Containers".format(home_path),
-  "{}/Library/Caches".format(home_path),
-  "{}/Library/HTTPStorages".format(home_path),
-  "{}/Library/Group Containers".format(home_path),
-  "{}/Library/Internet Plug-Ins".format(home_path),
-  "{}/Library/LaunchAgents".format(home_path),
-  "{}/Library/Logs".format(home_path),
-  "{}/Library/Preferences".format(home_path),
-  "{}/Library/Preferences/ByHost".format(home_path),
-  "{}/Library/Saved Application State".format(home_path),
-  "{}/Library/WebKit".format(home_path),
+  "{}/Library".format(homePath),
+  "{}/Library/Application Scripts".format(homePath),
+  "{}/Library/Application Support".format(homePath),
+  "{}/Library/Application Support/CrashReporter".format(homePath),
+  "{}/Library/Containers".format(homePath),
+  "{}/Library/Caches".format(homePath),
+  "{}/Library/HTTPStorages".format(homePath),
+  "{}/Library/Group Containers".format(homePath),
+  "{}/Library/Internet Plug-Ins".format(homePath),
+  "{}/Library/LaunchAgents".format(homePath),
+  "{}/Library/Logs".format(homePath),
+  "{}/Library/Preferences".format(homePath),
+  "{}/Library/Preferences/ByHost".format(homePath),
+  "{}/Library/Saved Application State".format(homePath),
+  "{}/Library/WebKit".format(homePath),
   "/Library",
   "/Library/Logs/DiagnosticReports",
   "/Library/Application Support",
@@ -181,30 +181,30 @@ results = ["{}".format(argv[1])]
 
 # perform app content search
 for location in locations:
-  results += search_function(location, identifier, 1)
-  results += search_function(location, app_name, 1)
+  results += searchFunction(location, identifier, 1)
+  results += searchFunction(location, appName, 1)
 # search through additional special locations
-results += search_function('/private/var/tmp', identifier, 6)
-results += search_function('/private/var/folders', identifier, 4)
+results += searchFunction('/private/var/tmp', identifier, 6)
+results += searchFunction('/private/var/folders', identifier, 4)
 
 try:
   infoplist_ios
   containers = []
   if errorCheck:
-    print(f" - Looking for {app_name} containers")
-  container_files = search_function("{}/Library/Containers".format(home_path), identifier, 6)
+    print(f" - Looking for {appName} containers")
+  containerFiles = searchFunction("{}/Library/Containers".format(homePath), identifier, 6)
   # if containers are found
-  if container_files:
+  if containerFiles:
     if errorCheck:
       print(" - Found container files:")
-    for container_file in container_files:
+    for containerFile in containerFiles:
       if errorCheck:
-        print(container_file)
-      container_folder = container_file.split('/')[5]
+        print(containerFile)
+      container_folder = containerFile.split('/')[5]
       if container_folder not in containers:
         containers.append(container_folder)
     for i in range (0, len(containers)):
-      results += f'{home_path}/Library/Containers/{containers[i]}'.splitlines()
+      results += f'{homePath}/Library/Containers/{containers[i]}'.splitlines()
   else:
     if errorCheck:
       print(" - No containers found. Proceeding")
@@ -213,8 +213,8 @@ except:
   # exit(0)
   pass
 
-print(f"\n - All {app_name} locations:\n")
+print(f"\n - All {appName} locations:\n")
 for file in results:
   print(file)
 
-choose_to_delete(results)
+chooseToDelete(results)
