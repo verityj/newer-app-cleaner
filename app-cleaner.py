@@ -10,7 +10,9 @@
 # Usage: python3 app-cleaner.py /Applications/<app-name>.app
 # Example: python3 app-cleaner.py /Applications/Damus.app
 #
-# Line 23 change errorCheck to False to simplify output
+# Line 15 change errorCheck to False to simplify output
+
+errorCheck = True
 
 from sys import argv
 from os import popen
@@ -19,8 +21,6 @@ from os.path import exists
 from os.path import splitext
 from pathlib import Path
 import time # for pausing
-
-errorCheck = True
 
 ##############
 # How to use #
