@@ -129,7 +129,7 @@ if app_name:
     "'Info.plist' could not be found. Exiting"
     exit(0)
 else:
-  print(" - {} not found in /Applications/. Exiting".format(argv[1]))
+  print(" - {} could not be processed as an app. Exiting".format(argv[1]))
   exit(0)
 
 # Set search locations
